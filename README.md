@@ -39,3 +39,8 @@ Es gelten die selben Befehle wir in Projekt 7 d.h.
     ausführen mit java VMTranslator ./path/File.vm      (Als Beispiel java VMTranslator ./ProgramFlow/BasicLoop/BasicLoop.vm)
 	Erweiterung der Ausführung das auch ganze Verzeichnise übergeben werden können, egal ob als Absoluter- oder Relativer Pfad
 	!!Bekanntest Problem ist hierbei wenn Ordner Namen eine leerstelle besitzt, dadurch wird der Pfad an der leerstelle getrennt und als 2 Argumente an das Programm übergeben. Das hat zur folge dass die Quelle nicht gefunden werden kann, bitte vermeidet leerstellen in Ordner und Datei Namen!!
+
+Projekt 9: Das Hangman game
+
+Ich habe versucht ein Hangman game zu gestallten. Es funktioniert wie Typisches Hangman, Controlls sind einfach Buchstaben per Tastendruck eingeben und mit Enter bestätigen. per eingabe von RES kann das spiel mittendrin neugestartet werden.
+Bei Win/Loss kann mit Y und Enter ein neues Spiel gestartet werden. Die Pixel hängen etwas in einander aber naja ist halt jetzt so, da meine Zeit etwas knapp wird bleibt das auch so.

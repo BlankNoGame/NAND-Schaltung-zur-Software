@@ -1,0 +1,8 @@
+class Main {
+    function void main() {
+        var HangManGame game;
+        let game = HangManGame.new();
+        do game.run();
+        return;
+    }
+}

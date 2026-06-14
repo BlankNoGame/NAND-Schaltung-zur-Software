@@ -1,0 +1,54 @@
+class Figure {
+
+    field int baseX;
+    field int baseY;
+
+    constructor Figure new() {
+        let baseX = 352;
+        let baseY = 10;
+        return this;
+    }
+
+    method void draw(int e) {
+
+        do Screen.drawLine(baseX, baseY + 160, baseX + 40, baseY + 160);
+
+        if (e > 0) {
+            do Screen.drawLine(baseX + 20, baseY, baseX + 20, baseY + 160);
+        }
+
+        if (e > 1) {
+            do Screen.drawLine(baseX + 20, baseY, baseX + 80, baseY);
+        }
+
+        if (e > 2) {
+            do Screen.drawLine(baseX + 80, baseY, baseX + 80, baseY + 20);
+        }
+
+        if (e > 3) {
+            do Screen.drawRectangle(baseX + 70, baseY + 20, baseX + 90, baseY + 40);
+        }
+
+        if (e > 4) {
+            do Screen.drawLine(baseX + 80, baseY + 40, baseX + 80, baseY + 80);
+        }
+
+        if (e > 5) {
+            do Screen.drawLine(baseX + 80, baseY + 50, baseX + 60, baseY + 70);
+        }
+
+        if (e > 6) {
+            do Screen.drawLine(baseX + 80, baseY + 50, baseX + 100, baseY + 70);
+        }
+
+        if (e > 7) {
+            do Screen.drawLine(baseX + 80, baseY + 80, baseX + 60, baseY + 110);
+        }
+
+        if (e > 8) {
+            do Screen.drawLine(baseX + 80, baseY + 80, baseX + 100, baseY + 110);
+        }
+
+        return;
+    }
+}

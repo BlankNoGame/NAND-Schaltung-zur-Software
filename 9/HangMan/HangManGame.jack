@@ -1,0 +1,279 @@
+class HangManGame {
+
+    field Dictionary dict;
+    field Figure figure;
+
+    field Array word;
+    field Array mask;
+    field Array revealed;
+    field Array guessed;
+
+    field int length;
+    field int errors;
+    field int wordIndex;
+    field int state;
+    field int messageState;
+
+    constructor HangManGame new() {
+        let dict = Dictionary.new();
+        let figure = Figure.new();
+        do startNewGame();
+        return this;
+    }
+
+    method void startNewGame() {
+        var int i;
+
+        let errors = 0;
+        let state = 0;
+        let messageState = 0;
+
+        let wordIndex = dict.getNextIndex();
+        let word = dict.getWord(wordIndex);
+        let mask = dict.getMask(wordIndex);
+        let length = dict.getLength(wordIndex);
+
+        let revealed = Array.new(length);
+        let guessed = Array.new(26);
+
+        let i = 0;
+        while (i < length) {
+            let revealed[i] = 0;
+            let i = i + 1;
+        }
+
+        let i = 0;
+        while (i < 26) {
+            let guessed[i] = 0;
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void run() {
+        var String input;
+
+        while (true) {
+
+            do Screen.clearScreen();
+            do figure.draw(errors);
+
+            do Output.moveCursor(0, 0);
+            do drawTitle();
+
+            do Output.moveCursor(2, 0);
+            do drawWord();
+
+            do Output.moveCursor(4, 0);
+            do drawErrors();
+
+            do Output.moveCursor(5, 0);
+            do drawGuessed();
+
+            do Output.moveCursor(7, 0);
+            do drawMessage();
+
+            if (~(state = 0)) {
+                do Output.moveCursor(9, 0);
+                if (state = 1) {
+                    do Output.printString("YOU WIN!  Type Y + Enter to play again.");
+                } else {
+                    do Output.printString("YOU LOSE! Type Y + Enter to play again.");
+                    do Output.moveCursor(10, 0);
+                    do Output.printString("Word was: ");
+                    do printFullWord();
+                }
+
+                let input = Keyboard.readLine("");
+
+                if ((input.length() > 0) &
+                    ((input.charAt(0) = 89) | (input.charAt(0) = 121))) {
+                    do startNewGame();
+                }
+
+            } else {
+                do Output.moveCursor(9, 0);
+                do Output.printString("Guess (letter or RES): ");
+                let input = Keyboard.readLine("");
+
+                do processInput(input);
+                do checkWin();
+                do checkLose();
+            }
+        }
+        return;
+    }
+
+    method void processInput(String input) {
+        var int len;
+        var int c0;
+        var int c1;
+        var int c2;
+        var int ascii;
+        var int index;
+
+        let messageState = 0;
+        let len = input.length();
+
+        if (len = 0) {
+            let messageState = 2;
+            return;
+        }
+
+        if (len = 3) {
+            let c0 = input.charAt(0);
+            let c1 = input.charAt(1);
+            let c2 = input.charAt(2);
+
+            if (c0 > 96) { let c0 = c0 - 32; }
+            if (c1 > 96) { let c1 = c1 - 32; }
+            if (c2 > 96) { let c2 = c2 - 32; }
+
+            if ((c0 = 82) & (c1 = 69) & (c2 = 83)) {
+                do startNewGame();
+                return;
+            }
+        }
+
+        let ascii = input.charAt(0);
+
+        if ((ascii > 96) & (ascii < 123)) {
+            let ascii = ascii - 32;
+        }
+
+        if ((ascii < 65) | (ascii > 90)) {
+            let messageState = 2;
+            return;
+        }
+
+        let index = ascii - 65;
+
+        if (guessed[index] = 1) {
+            let messageState = 1;
+            return;
+        }
+
+        do applyGuess(index);
+        return;
+    }
+
+    method void applyGuess(int index) {
+        var int maskValue;
+        var int i;
+        var Array bitValues;
+        var int bit;
+        var int q;
+
+        let guessed[index] = 1;
+        let maskValue = mask[index];
+
+        if (maskValue = 0) {
+            let errors = errors + 1;
+            return;
+        }
+
+        let bitValues = dict.getBitValues();
+        let i = 0;
+
+        while (i < length) {
+            let bit = bitValues[i];
+            let q   = maskValue / bit;
+            if ((q - ((q / 2) * 2)) = 1) {
+                let revealed[i] = 1;
+            }
+            let i = i + 1;
+        }
+
+        return;
+    }
+
+    method void checkWin() {
+        var int i;
+        let i = 0;
+        while (i < length) {
+            if (revealed[i] = 0) {
+                return;
+            }
+            let i = i + 1;
+        }
+        let state = 1;
+        return;
+    }
+
+    method void checkLose() {
+        if (errors = 9) {
+            let state = 2;
+        }
+        return;
+    }
+
+    method void drawTitle() {
+        do Output.printString("=== HANGMAN ===");
+        return;
+    }
+
+    method void drawWord() {
+        var int i;
+        let i = 0;
+        while (i < length) {
+            if (revealed[i] = 1) {
+                do Output.printChar(word[i]);
+            } else {
+                do Output.printChar(95);
+            }
+            do Output.printChar(32);
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void printFullWord() {
+        var int i;
+        let i = 0;
+        while (i < length) {
+            do Output.printChar(word[i]);
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void drawErrors() {
+        var int remaining;
+        let remaining = 9 - errors;
+        do Output.printString("Errors: ");
+        do Output.printInt(errors);
+        do Output.printString("/9  Remaining: ");
+        do Output.printInt(remaining);
+        return;
+    }
+
+    method void drawGuessed() {
+        var int i;
+        var int ascii;
+
+        do Output.printString("Guessed: ");
+
+        let i = 0;
+        while (i < 26) {
+            if (guessed[i] = 1) {
+                let ascii = i + 65;
+                do Output.printChar(ascii);
+            } else {
+                do Output.printChar(46);
+            }
+            do Output.printChar(32);
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void drawMessage() {
+        if (messageState = 1) {
+            do Output.printString(">> Already guessed that letter!");
+        }
+        if (messageState = 2) {
+            do Output.printString(">> Invalid input - enter a single letter.");
+        }
+        return;
+    }
+}
