@@ -69,3 +69,23 @@ compileSubroutineCalls:
 
 Programm funktioniert wie in der Lecture beschrieben, mit javac JackAnalyzer.java werden alle Klassen compiliert und dann mit java JackAnalyzer source werden alle jack files in der source gelesen und in eine eigene xml datei umgeformt in der form von JackFileNameT.xml. 
 Es gilt weiter !!Bekanntest Problem ist hierbei wenn Ordner Namen eine leerstelle besitzt, dadurch wird der Pfad an der leerstelle getrennt und als 2 Argumente an das Programm übergeben. Das hat zur folge dass die Quelle nicht gefunden werden kann, bitte vermeidet leerstellen in Ordner und Datei Namen!!
+
+Projekt 11:
+
+Hilfsklassen: Ich habe 2 enums für die Kind und Segment Konstanten erstellt, sowie einen eigenen Record für Symbol, damit es einen Datenkontainer gibt welche für die SymbolTable Kind, Type und Index kombiniert.
+
+Hilfsmethoden: Aus Projekt 10 habe ich alle Hilfsmethoden entfernt welche für das schreiben der xml file zuständig waren. Dafür habe ich Hilfsmethoden hinzugefügt welche helfen VM code zu schreiben. Vorallem die Expect Methoden sind dafür da nur den tokenizer zu advance wenn wir den richtige Token haben, damit die Grammatik besser eigehalten werden kann und das debugging einfacher wird.
+
+consume: Extramethode welche den hasMoreTokens check macht und gegebenenfalls den Tokenizer advanced. Vereinfacht die Abfrage im weiteren Code
+
+expectKeyword: checks ob der momentanen Token vom Typ Keyword ist und ob das übergebene keyWort zu dem im Token passt. Falls es dies tut wird das Token konsumiert. Die Methoden expectSymbol, expectIdentifier, expectType führen diese Abfrage für deren eigene Fälle aus. Diese Methoden sind vorallem dafür da um den tokenizer zu advance wenn wir den richtige Token haben, damit die Grammatik besser eigehalten werden kann und das debugging einfacher wird.
+
+writeOperator: Hier habe ich das schreiben für die Operatoren extrahiert und in eine Methode gefassst.
+
+pushVaribale: Methode welche für die gegebene Variable den vollständigen Push schreibt
+
+popVariable: Methode welche für die gegebene Variable den vollständigen Pop schreibt
+
+kindToSegment: Übersetzt die Werte des ENUMS Kind in das gleichnamig Segment um, damit wir writePush und writePop besser nutzen können.
+
+Ansonsten Funktioniert das Programm genauso mit den selben befehlen wie das Projekt 10.
