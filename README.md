@@ -89,3 +89,7 @@ popVariable: Methode welche für die gegebene Variable den vollständigen Pop sc
 kindToSegment: Übersetzt die Werte des ENUMS Kind in das gleichnamig Segment um, damit wir writePush und writePop besser nutzen können.
 
 Ansonsten Funktioniert das Programm genauso mit den selben befehlen wie das Projekt 10.
+
+Projekt 12: 
+
+Compilieren und ausführen wie im Projekt beschrieben, alle Dateien liegen in ihrem eigenen Ordner vor. Ich hoffe alles worked.
