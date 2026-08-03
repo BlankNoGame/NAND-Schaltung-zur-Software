@@ -43,7 +43,7 @@ class Sys {
             while (j < 350) {
                 let j = j + 1;
             }
-            let j = j + 1;
+            let i = i + 1;
         }
         return;
     }
